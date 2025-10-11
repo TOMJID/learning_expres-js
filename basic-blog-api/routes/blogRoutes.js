@@ -30,7 +30,15 @@ router.get("/", (req, res) => {
 // GET a single blog
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  res.send("blog id:" + id);
+  const blogs = readBlogsAPI();
+
+  // finding the blog with the given id
+  const blog = blogs.find((data) => data.id === parseInt(id));
+  if (blog) {
+    res.status(200).json(blog);
+  } else {
+    res.status(404).json({ message: "Blog not found" });
+  }
 });
 
 export default router;
