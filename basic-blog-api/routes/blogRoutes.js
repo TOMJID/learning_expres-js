@@ -30,15 +30,41 @@ router.get("/", (req, res) => {
 // GET a single blog
 router.get("/:id", (req, res) => {
   const { id } = req.params;
+  // Reading the blogs from the JSON file
   const blogs = readBlogsAPI();
 
   // finding the blog with the given id
   const blog = blogs.find((data) => data.id === parseInt(id));
+
   if (blog) {
     res.status(200).json(blog);
   } else {
     res.status(404).json({ message: "Blog not found" });
   }
+});
+
+// POST a new blog
+router.post("/add-blog", (req, res) => {
+  // Extracting title and description from the request body
+  const { title, description } = req.body;
+  
+  // Reading the existing blogs from the JSON file
+  const blogs = readBlogsAPI();
+
+  // Create new blog with ID
+  const newBlog = {
+    id: blogs.length + 1,
+    title,
+    description,
+  };
+
+  // Adding the new blog to the existing blogs array
+  blogs.push(newBlog);
+
+  // Writing the updated blogs array back to the JSON file
+  fs.writeFileSync(blogsAPIPath, JSON.stringify(blogs, null, 2));
+
+  res.status(201).json({ message: "Blog added successfully" });
 });
 
 export default router;
