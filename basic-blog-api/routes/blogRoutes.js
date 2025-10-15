@@ -47,7 +47,7 @@ router.get("/:id", (req, res) => {
 router.post("/add-blog", (req, res) => {
   // Extracting title and description from the request body
   const { title, description } = req.body;
-  
+
   // Reading the existing blogs from the JSON file
   const blogs = readBlogsAPI();
 
@@ -67,4 +67,45 @@ router.post("/add-blog", (req, res) => {
   res.status(201).json({ message: "Blog added successfully" });
 });
 
+// UPDATE an existing blog with PUT method
+router.put("/update-blog/:id", (req, res) => {
+  // Extracting id from the request parameters
+  const { id } = req.params;
+
+  // Extracting title and description from the request body
+  const { title, description, author } = req.body;
+
+  // Reading the existing blogs from the JSON file
+  const blogs = readBlogsAPI();
+  const blog = blogs.find((data) => data.id === parseInt(id));
+  if (!blog) return res.send(`message: Blog with id ${id} not found`);
+
+  // Updating the blog's title and description
+  blog.title = title || blog.title;
+  blog.description = description || blog.description;
+  blog.author = author || "Unknown";
+
+  // Writing the updated blogs array back to the JSON file
+  fs.writeFileSync(blogsAPIPath, JSON.stringify(blogs, null, 2));
+
+  res.status(200).json({ message: "Blog updated successfully" });
+});
+
+// DELETE a blog
+router.delete("/delete-blog/:id", (req, res) => {
+  const { id } = req.params;
+  const blogs = readBlogsAPI();
+  const blogIndex = blogs.findIndex((data) => data.id === parseInt(id));
+
+  if (blogIndex === -1)
+    return res.send(`message: Blog with id ${id} not found`);
+  else {
+    blogs.splice(blogIndex, 1);
+
+    // Writing the updated blogs array back to the JSON file
+    fs.writeFileSync(blogsAPIPath, JSON.stringify(blogs, null, 2));
+
+    res.status(200).json({ message: "Blog deleted successfully" });
+  }
+});
 export default router;
