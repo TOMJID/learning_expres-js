@@ -1,0 +1,21 @@
+{
+  "name": "built-in-middleware",
+  "version": "1.0.0",
+  "description": "learning about build-in middleware of express.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "tomjid",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "morgan": "^1.10.1"
+  }
+}
