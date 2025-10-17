@@ -10,8 +10,8 @@ app.get("/inspect", (req, res) => {
   console.log(`Request Method: ${req.method}`);
   console.log(`Request URL: ${req.url}`);
   // http://localhost:3000/inspect?test=hello&t2=hi
-  console.log(`Request Query: ${req.query}`);
-  console.log(`Request headers: ${req.headers}`);
+  console.log(`Request Query: ${JSON.stringify(req.query)}`);
+  console.log(`Request headers: ${JSON.stringify(req.headers)}`);
   res.send("inspect route");
 });
 app.get("/params/:id", (req, res) => {
