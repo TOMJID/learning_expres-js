@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 const app = express();
 const PORT = process.env.PORT || 3030;
 
@@ -18,6 +19,25 @@ app.get("/redirect", (req, res) => {
 
 app.get("/status", (req, res) => {
   res.status(404).send("statue - 404");
+});
+
+// * set different types of file (json data, html elements,statics file etc..)
+app.get("/api/user", (req, res) => {
+  const user = {
+    id: 1,
+    name: "tomjid",
+    age: 21,
+  };
+  res.status(200).json({
+    massage: " user created successfully",
+    user: user,
+  });
+});
+
+// * sending html files
+app.get("/html", (req, res) => {
+  const filePath = path.join(process.cwd(), "index.html");
+  res.sendFile(filePath);
 });
 
 app.listen(PORT, () => {
